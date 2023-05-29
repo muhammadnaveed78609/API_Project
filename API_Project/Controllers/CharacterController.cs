@@ -1,4 +1,5 @@
-﻿using API_Project.Models;
+﻿using API_Project.Dtos.Character;
+using API_Project.Models;
 using API_Project.Service.CharacterService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -22,23 +23,44 @@ namespace API_Project.Controllers
         //    return Ok(knight);
         //}
         [HttpGet("getall")]
-        public ActionResult<List<Character>> Get()
+        public async Task<ActionResult<GenericServiceResponse<List<GetCharacterDto>>>> Get()
         {
-            return Ok(_characterService.GetAllCharacters());
+            return Ok(await _characterService.GetAllCharacters());
         }
         //we can do that also
         //[HttpGet]
         //[Route("/getall")]
         [HttpGet("id")]
-        public ActionResult<Character> GetSingle(int? id) {
-        return Ok(_characterService.GetCharacterById(id));
+        public async Task<ActionResult<GenericServiceResponse<GetCharacterDto>>> GetSingle(int? id) {
+        return Ok(await _characterService.GetCharacterById(id));
         }
 
 
         [HttpPost]
-        public ActionResult<List<Character>> AddCharacter(Character newcharacter) { 
+        public async Task<ActionResult<GenericServiceResponse<List<GetCharacterDto>>>> AddCharacter(AddCharacterDto newcharacter) { 
         
-            return Ok(_characterService.AddCharacter(newcharacter));   
+            return Ok(await _characterService.AddCharacter(newcharacter)); 
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<GenericServiceResponse<List<GetCharacterDto>>>> UpdateCharacter(UpdateCharacterdto updatecharacter)
+        {
+            var response = await _characterService.UpdateCharacter(updatecharacter);
+            if(response.Data is null)
+            {
+                return NotFound(response);
+            }
+            return Ok(response);
+        }
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<GenericServiceResponse<List<GetCharacterDto>>>> DeleteCharacter( int id)
+        {
+            var response = await _characterService.DeleteCharacter(id);
+            if (response.Data is null)
+            {
+                return NotFound(response);
+            }
+            return Ok(response);
         }
     }
 }

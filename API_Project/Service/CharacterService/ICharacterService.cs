@@ -1,9 +1,13 @@
-﻿namespace API_Project.Service.CharacterService
+﻿using API_Project.Dtos.Character;
+
+namespace API_Project.Service.CharacterService
 {
     public interface ICharacterService
     {
-        List<Character> GetAllCharacters();
-        Character GetCharacterById(int? id);
-        List<Character> AddCharacter(Character newcharacter);
+        Task<GenericServiceResponse<List<GetCharacterDto>>> GetAllCharacters();
+        Task<GenericServiceResponse<GetCharacterDto>> GetCharacterById(int? id);
+        Task<GenericServiceResponse<List<GetCharacterDto>>> AddCharacter(AddCharacterDto newcharacter);
+        Task<GenericServiceResponse<GetCharacterDto>> UpdateCharacter(UpdateCharacterdto newcharacter);
+        Task<GenericServiceResponse<List<GetCharacterDto>>> DeleteCharacter(int id );
     }
 }
